@@ -17,7 +17,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TodoComposeTheme {
-
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
+                    Greeting("Android")
+                }
             }
         }
     }
@@ -28,14 +34,7 @@ class MainActivity : ComponentActivity() {
 
 
 
-/*
-    // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+
 
 
 
@@ -50,4 +49,4 @@ fun DefaultPreview() {
     TodoComposeTheme {
         Greeting("Android")
     }
-}*/
+}
