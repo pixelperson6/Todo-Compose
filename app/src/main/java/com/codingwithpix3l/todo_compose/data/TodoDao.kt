@@ -1,9 +1,7 @@
 package com.codingwithpix3l.todo_compose.data
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
+import androidx.room.OnConflictStrategy.IGNORE
 import com.codingwithpix3l.todo_compose.data.model.TodoTask
 import kotlinx.coroutines.flow.Flow
 
@@ -17,11 +15,14 @@ interface TodoDao {
     @Query("SELECT * FROM todo_table WHERE id=:taskId")
     fun getTaskById(taskId:Int):Flow<TodoTask>
 
+    @Insert(onConflict = IGNORE)
+    suspend fun addTask(todoTask: TodoTask)
+
     @Delete
-    suspend fun delete(todoTask: TodoTask)
+    suspend fun deleteTask(todoTask: TodoTask)
 
     @Update
-    suspend fun update(todoTask: TodoTask)
+    suspend fun updateTask(todoTask: TodoTask)
 
     @Query("DELETE FROM todo_table")
     suspend fun deleteAll()
