@@ -27,8 +27,6 @@ fun ListScreen(
     val searchBarState :SearchBarState by sharedViewModel.searchBarState
     val searchTextState :String by sharedViewModel.searchTextState
 
-
-
     Scaffold(
         content = {},
         topBar = {
