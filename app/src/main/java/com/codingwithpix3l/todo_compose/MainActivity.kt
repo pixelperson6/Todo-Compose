@@ -26,7 +26,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             TodoComposeTheme {
 
-
                 navHostController = rememberNavController()
                 SetupNavigation(
                     navController = navHostController,
