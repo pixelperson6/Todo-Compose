@@ -204,7 +204,7 @@ fun SearchTopBar(
             placeholder = {
                 Text(
                     modifier = Modifier.alpha(ContentAlpha.medium),
-                    text = "Search",
+                    text = stringResource(R.string.search),
                     color = Color.White
                 )
             },

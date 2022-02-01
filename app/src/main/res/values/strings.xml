@@ -8,4 +8,5 @@
     <string name="tasks">Tasks</string>
     <string name="search_icon">Search icon</string>
     <string name="close_icon">close icon</string>
+    <string name="search">Search</string>
 </resources>
