@@ -6,12 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codingwithpix3l.todo_compose.data.model.TodoTask
 import com.codingwithpix3l.todo_compose.data.repository.TodoRepository
+import com.codingwithpix3l.todo_compose.util.RequestState
 import com.codingwithpix3l.todo_compose.util.SearchBarState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -23,17 +25,20 @@ class SharedViewModel @Inject constructor(private val repository: TodoRepository
 
     val searchTextState : MutableState<String> = mutableStateOf("")
 
-    private val _allTasks = MutableStateFlow<List<TodoTask>>(emptyList())
+    private val _allTasks = MutableStateFlow<RequestState<List<TodoTask>>>(RequestState.Idle)
 
-    val allTasks: StateFlow<List<TodoTask>> = _allTasks
+    val allTasks: StateFlow<RequestState<List<TodoTask>>> = _allTasks
 
     fun getAllTasks() {
-        viewModelScope.launch {
-            repository.getAllData.collect {
-
-                _allTasks.value = it
-
+        _allTasks.value = RequestState.Loading
+        try {
+            viewModelScope.launch {
+                repository.getAllData.collect {
+                    _allTasks.value = RequestState.Success(it)
+                }
             }
+        }catch (e:Exception){
+            _allTasks.value = RequestState.Error(e)
         }
     }
 }

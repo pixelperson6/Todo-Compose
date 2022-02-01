@@ -18,25 +18,28 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.codingwithpix3l.todo_compose.R
-import com.codingwithpix3l.todo_compose.data.model.Priority
 import com.codingwithpix3l.todo_compose.data.model.TodoTask
 import com.codingwithpix3l.todo_compose.ui.theme.*
+import com.codingwithpix3l.todo_compose.util.RequestState
 
 @ExperimentalMaterialApi
 @Composable
 fun ListContent(
-    tasks: List<TodoTask>,
+    tasks: RequestState<List<TodoTask>>,
     navigateToTaskScreen: (taskId: Int) -> Unit
 ) {
 
-    if (tasks.isEmpty()){
-        EmptyContent()
-    }else{
-        DisplayTasks(
-            tasks = tasks,
-            navigateToTaskScreen = navigateToTaskScreen
-        )
+    if (tasks is RequestState.Success){
+        if (tasks.data.isEmpty()){
+            EmptyContent()
+        }else{
+            DisplayTasks(
+                tasks = tasks.data,
+                navigateToTaskScreen = navigateToTaskScreen
+            )
+        }
     }
+
 
 }
 
