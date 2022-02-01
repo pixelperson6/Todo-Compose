@@ -1,13 +1,12 @@
 package com.codingwithpix3l.todo_compose.ui.screens.list
 
 
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -18,11 +17,21 @@ import com.codingwithpix3l.todo_compose.ui.viewmodels.SharedViewModel
 import com.codingwithpix3l.todo_compose.util.SearchBarState
 
 
+@ExperimentalMaterialApi
 @Composable
 fun ListScreen(
     navigateToTaskScreen: (taskId: Int) -> Unit,
     sharedViewModel : SharedViewModel
 ) {
+
+    LaunchedEffect(key1 = true){
+        sharedViewModel.getAllTasks()
+    }
+
+
+
+    val allTask by sharedViewModel.allTasks.collectAsState()
+
 
     val searchBarState :SearchBarState by sharedViewModel.searchBarState
     val searchTextState :String by sharedViewModel.searchTextState
@@ -36,7 +45,10 @@ fun ListScreen(
                      )
         },
         content = {
-            ListContent()
+            ListContent(
+                tasks = allTask,
+                navigateToTaskScreen = navigateToTaskScreen
+            )
         },
         floatingActionButton = {
             ListFab(OnFabClicked = navigateToTaskScreen)

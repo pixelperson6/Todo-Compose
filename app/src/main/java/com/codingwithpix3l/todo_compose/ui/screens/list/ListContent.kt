@@ -3,6 +3,8 @@ package com.codingwithpix3l.todo_compose.ui.screens.list
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -18,8 +20,25 @@ import com.codingwithpix3l.todo_compose.data.model.Priority
 import com.codingwithpix3l.todo_compose.data.model.TodoTask
 import com.codingwithpix3l.todo_compose.ui.theme.*
 
+@ExperimentalMaterialApi
 @Composable
-fun ListContent() {
+fun ListContent(
+    tasks: List<TodoTask>,
+    navigateToTaskScreen: (taskId: Int) -> Unit
+) {
+    LazyColumn{
+        items(
+            items = tasks,
+            key = { task ->
+                task.id
+            }
+        ){  task ->
+            TaskItem(
+                todoTask = task,
+                navigateToTaskScreen = navigateToTaskScreen
+            )
+        }
+    }
 
 }
 
