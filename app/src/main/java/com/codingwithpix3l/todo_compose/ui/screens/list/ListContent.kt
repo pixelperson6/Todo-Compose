@@ -2,20 +2,22 @@ package com.codingwithpix3l.todo_compose.ui.screens.list
 
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.codingwithpix3l.todo_compose.R
 import com.codingwithpix3l.todo_compose.data.model.Priority
 import com.codingwithpix3l.todo_compose.data.model.TodoTask
 import com.codingwithpix3l.todo_compose.ui.theme.*
@@ -26,6 +28,23 @@ fun ListContent(
     tasks: List<TodoTask>,
     navigateToTaskScreen: (taskId: Int) -> Unit
 ) {
+
+    if (tasks.isEmpty()){
+        EmptyContent()
+    }else{
+        DisplayTasks(
+            tasks = tasks,
+            navigateToTaskScreen = navigateToTaskScreen
+        )
+    }
+
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun DisplayTasks(
+    tasks: List<TodoTask>,
+    navigateToTaskScreen: (taskId: Int) -> Unit){
     LazyColumn{
         items(
             items = tasks,
@@ -39,8 +58,8 @@ fun ListContent(
             )
         }
     }
-
 }
+
 
 @ExperimentalMaterialApi
 @Composable
@@ -81,9 +100,7 @@ fun TaskItem(
                     contentAlignment = Alignment.TopEnd
                 ) {
                     Canvas(
-                        modifier = Modifier
-                            .height(PRIORITY_INDICATOR_SIZE)
-                            .width(PRIORITY_INDICATOR_SIZE)
+                        modifier = Modifier.size(PRIORITY_INDICATOR_SIZE)
                     ) {
                         drawCircle( color = todoTask.priority.color  )
                     }
@@ -102,10 +119,34 @@ fun TaskItem(
     }
 }
 
-@ExperimentalMaterialApi
+@Composable
+fun EmptyContent(){
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Icon(modifier = Modifier.size(120.dp),
+            painter = painterResource(id = R.drawable.ic_sad_emoji),
+            contentDescription = stringResource(R.string.sad_face),
+            tint = MediumGray
+        )
+        Text(
+            text = stringResource(R.string.empty_content_txt),
+            color = MediumGray,
+            fontWeight = FontWeight.Bold,
+            fontStyle = MaterialTheme.typography.h6.fontStyle
+        )
+
+    }
+}
+
 @Composable
 @Preview
 fun TaskItemPreview(){
-
-    TaskItem(todoTask = TodoTask(id = 1, title = "This", disc = "Long this and that",Priority.HIGH), navigateToTaskScreen = {})
+    EmptyContent()
 }
+
