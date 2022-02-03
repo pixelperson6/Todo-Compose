@@ -39,10 +39,8 @@ fun TopAppBar(
                     sharedViewModel.searchBarState.value = SearchBarState.OPENED
                 },
                 onSortClicked = {
-                                //sort the tasks
                 },
                 onDeleteAllClicked = {
-                    //deleteAll tasks
                 }
             )
         }
@@ -58,7 +56,6 @@ fun TopAppBar(
 
                 },
                 onSearchClicked = {
-                    //query the typed string
                 }
             )
 
