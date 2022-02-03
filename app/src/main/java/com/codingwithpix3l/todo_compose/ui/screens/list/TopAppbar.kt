@@ -57,7 +57,9 @@ fun TopAppBar(
                     sharedViewModel.searchTextState.value = ""
 
                 },
-                onSearchClicked = {}
+                onSearchClicked = {
+                    //query the typed string
+                }
             )
 
         }
