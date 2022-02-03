@@ -41,7 +41,9 @@ fun TopAppBar(
                 onSortClicked = {
                                 //sort the tasks
                 },
-                onDeleteAllClicked = { }
+                onDeleteAllClicked = {
+                    //deleteAll tasks
+                }
             )
         }
         else -> {
