@@ -38,7 +38,9 @@ fun TopAppBar(
                 onSearchClicked = {
                     sharedViewModel.searchBarState.value = SearchBarState.OPENED
                 },
-                onSortClicked = { },
+                onSortClicked = {
+                                //sort the tasks
+                },
                 onDeleteAllClicked = { }
             )
         }
