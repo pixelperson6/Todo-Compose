@@ -11,4 +11,9 @@
     <string name="search">Search</string>
     <string name="sad_face">Sad face</string>
     <string name="empty_content_txt">No task found</string>
+    <string name="add_task">Add task</string>
+    <string name="back_button">Back button</string>
+    <string name="close_btn">Close button</string>
+    <string name="update_task">Update task</string>
+    <string name="delete_task">Delete_task</string>
 </resources>
