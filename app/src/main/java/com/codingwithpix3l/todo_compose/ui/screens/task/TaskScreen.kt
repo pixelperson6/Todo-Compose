@@ -2,6 +2,7 @@ package com.codingwithpix3l.todo_compose.ui.screens.task
 
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import com.codingwithpix3l.todo_compose.data.model.Priority
 import com.codingwithpix3l.todo_compose.data.model.TodoTask
 import com.codingwithpix3l.todo_compose.util.Action
 
@@ -20,6 +21,15 @@ fun TaskScreen(
 
         },
         content = {
+
+            TaskContent(
+                title = "Shiv",
+                onTitleChanged = {},
+                description = "this is america",
+                onDescriptionChanged ={} ,
+                priority = Priority.HIGH,
+                onPrioritySelected = {}
+            )
 
         }
     )
