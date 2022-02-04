@@ -12,7 +12,6 @@ import androidx.compose.ui.res.stringResource
 import com.codingwithpix3l.todo_compose.R
 import com.codingwithpix3l.todo_compose.components.PriorityDropDown
 import com.codingwithpix3l.todo_compose.data.model.Priority
-import com.codingwithpix3l.todo_compose.ui.theme.LARGE_PADDING
 import com.codingwithpix3l.todo_compose.ui.theme.MEDIUM_PADDING
 
 @Composable
@@ -51,10 +50,6 @@ fun TaskContent(
             label = { Text(text = stringResource(id = R.string.description))},
             textStyle = MaterialTheme.typography.body1
         )
-
-
-
-
     }
 
 }
