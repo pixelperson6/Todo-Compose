@@ -7,10 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.codingwithpix3l.todo_compose.data.model.Priority
 import com.codingwithpix3l.todo_compose.data.model.TodoTask
 import com.codingwithpix3l.todo_compose.data.repository.TodoRepository
+import com.codingwithpix3l.todo_compose.util.Action
 import com.codingwithpix3l.todo_compose.util.Constant.MAX_TITLE_LENGTH
 import com.codingwithpix3l.todo_compose.util.RequestState
 import com.codingwithpix3l.todo_compose.util.SearchBarState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -21,6 +23,39 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SharedViewModel @Inject constructor(private val repository: TodoRepository) : ViewModel() {
+
+
+    val action : MutableState<Action> = mutableStateOf(Action.NO_ACTION)
+
+
+    private fun addTask(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val todoTask = TodoTask(
+                title = title.value,
+                disc = description.value,
+                priority = priority.value
+            )
+            repository.addTask(todoTask = todoTask)
+        }
+    }
+
+    fun handleDatabaseAction(action: Action){
+        when(action){
+            Action.ADD -> addTask()
+            Action.UPDATE -> {}
+            Action.DELETE -> {}
+            Action.DELETE_ALL -> {}
+            Action.UNDO -> {}
+            else->{
+            }
+        }
+        this.action.value = Action.NO_ACTION
+    }
+
+
+
+
+
 
 
     val id: MutableState<Int> = mutableStateOf(0)
@@ -81,6 +116,10 @@ class SharedViewModel @Inject constructor(private val repository: TodoRepository
         if (newTitle.length <= MAX_TITLE_LENGTH){
             title.value = newTitle
         }
+    }
+
+    fun isValid():Boolean{
+        return title.value.isNotEmpty() && description.value.isNotEmpty()
     }
 
 }
