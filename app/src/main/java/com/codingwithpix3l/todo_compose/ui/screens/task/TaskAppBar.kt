@@ -21,8 +21,6 @@ fun TaskAppBar(
     navigateToListScreen : (action:Action) -> Unit,
     ) {
 
-    //this will give a single task app bar according to the situation
-
     if (selectedTask==null){
         NewTaskAppBar(navigateToListScreen = navigateToListScreen)
     }else{
