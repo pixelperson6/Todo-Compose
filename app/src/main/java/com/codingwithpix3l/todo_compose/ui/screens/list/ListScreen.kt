@@ -20,10 +20,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun ListScreen(
     navigateToTaskScreen: (taskId: Int) -> Unit,
-    sharedViewModel : SharedViewModel
+    sharedViewModel: SharedViewModel
 ) {
 
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         sharedViewModel.getAllTasks()
     }
 
@@ -31,27 +31,29 @@ fun ListScreen(
 
     val allTask by sharedViewModel.allTasks.collectAsState()
 
-    val searchBarState :SearchBarState by sharedViewModel.searchBarState
-    val searchTextState :String by sharedViewModel.searchTextState
+    val searchBarState: SearchBarState by sharedViewModel.searchBarState
+    val searchTextState: String by sharedViewModel.searchTextState
 
 
-
-    val scaffoldState =rememberScaffoldState()
+    val scaffoldState = rememberScaffoldState()
     DisplaySnackBar(
         scaffoldState = scaffoldState,
         handleDatabaseAction = { sharedViewModel.handleDatabaseAction(action = action) },
+        onUndoClicked = {
+            sharedViewModel.action.value = it
+        },
         taskTitle = sharedViewModel.title.value,
-        action =action
+        action = action
     )
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-                 TopAppBar(
-                     sharedViewModel = sharedViewModel,
-                     searchBarState = searchBarState,
-                     searchTextState = searchTextState
-                     )
+            TopAppBar(
+                sharedViewModel = sharedViewModel,
+                searchBarState = searchBarState,
+                searchTextState = searchTextState
+            )
         },
         content = {
             ListContent(
@@ -85,20 +87,39 @@ fun ListFab(OnFabClicked: (taskId: Int) -> Unit) {
 @Composable
 fun DisplaySnackBar(
     scaffoldState: ScaffoldState,
-    handleDatabaseAction:() -> Unit,
-    taskTitle:String,
+    handleDatabaseAction: () -> Unit,
+    onUndoClicked: (action: Action) -> Unit,
+    taskTitle: String,
     action: Action
 ) {
     handleDatabaseAction()
     val scope = rememberCoroutineScope()
-    LaunchedEffect(key1 = action){
-        if (action != Action.NO_ACTION){
+    LaunchedEffect(key1 = action) {
+        if (action != Action.NO_ACTION) {
             scope.launch {
                 val snackBarResult = scaffoldState.snackbarHostState.showSnackbar(
                     message = "${action.name}: $taskTitle",
-                    actionLabel = "OK"
+                    actionLabel = if (action.name == "DELETE") "UNDO" else "OK"
+                )
+                undoDeletedTask(
+                    action = action,
+                    snackBarResult = snackBarResult,
+                    onUndoClicked = onUndoClicked
                 )
             }
         }
     }
+}
+
+private fun undoDeletedTask(
+    action: Action,
+    snackBarResult: SnackbarResult,
+    onUndoClicked: (action: Action) -> Unit,
+) {
+    if (snackBarResult == SnackbarResult.ActionPerformed
+        && action == Action.DELETE
+    ) {
+        onUndoClicked(Action.UNDO)
+    }
+
 }
